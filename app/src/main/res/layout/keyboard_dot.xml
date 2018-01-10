@@ -1,0 +1,12 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+  <!-- 小圆点View -->
+  <View
+      android:id="@+id/v_dot"
+      android:layout_width="@dimen/dp_8"
+      android:layout_height="@dimen/dp_8"
+      android:layout_marginLeft="@dimen/dp_3"
+      android:layout_marginRight="@dimen/dp_3"
+      android:background="@drawable/shape_circle_indicator_gray"/>
+</RelativeLayout>

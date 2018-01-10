@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+  <View style="@style/horizontal_line_normal"/>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+      <RadioGroup
+          android:id="@+id/rg_keyboard"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="center_vertical"
+          android:orientation="horizontal"
+          android:paddingLeft="@dimen/dp_15"
+          android:paddingRight="@dimen/dp_15">
+
+        <!--表情标签-->
+        <RadioButton
+            android:id="@+id/rb_keybord_emoji"
+            android:layout_marginEnd="@dimen/dp_15"
+            android:layout_marginRight="@dimen/dp_15"
+            android:background="@drawable/keyboard_expression_normal"
+            style="@style/keybord_radioButton"/>
+
+        <!--输入框-->
+        <com.meechao.detailflow.richText.TEditText
+            android:id="@+id/keyboard_rich_input"
+            style="@style/rich_editText"/>
+
+        <!--话题标签-->
+        <RadioButton
+            android:id="@+id/rb_keybord_topic_tag"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_marginStart="@dimen/dp_15"
+            android:background="@drawable/keyboard_question_normal"
+            style="@style/keybord_radioButton"/>
+
+        <!--发送按钮-->
+        <RadioButton
+            android:id="@+id/rb_send"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_marginStart="@dimen/dp_15"
+            style="@style/keyboard_send_btn"/>
+      </RadioGroup>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/text_length"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="@dimen/dp_20"
+        android:layout_marginRight="@dimen/dp_20"
+        android:textColor="@color/color_aab2bd"
+        android:textSize="@dimen/sp_14"
+        android:visibility="gone"/>
+  </LinearLayout>
+
+  <FrameLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/keyboard_emoji_rcv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_280"
+        android:visibility="gone"/>
+
+    <include
+        layout="@layout/view_tag_keyboard"
+        android:id="@+id/view_tag_keyboard"
+        android:visibility="gone"/>
+
+  </FrameLayout>
+</LinearLayout>

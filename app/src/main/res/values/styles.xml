@@ -1,0 +1,75 @@
+<resources>
+
+  <!-- Base application theme. -->
+  <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <!-- Customize your theme here. -->
+    <item name="colorPrimary">@color/colorPrimary</item>
+    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+    <item name="colorAccent">@color/colorAccent</item>
+  </style>
+
+  <style name="AppTheme.NoActionBar">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+  </style>
+
+  <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+  <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+  <style name="horizontal_line_normal">
+    <item name="android:background">@color/color_f6f6f9</item>
+    <item name="android:layout_height">@dimen/dp_1</item>
+    <item name="android:layout_width">match_parent</item>
+  </style>
+  <!--键盘切换的按钮样式-->
+  <style name="keybord_radioButton">
+    <item name="android:button">@null</item>
+    <item name="android:layout_width">@dimen/dp_28</item>
+    <item name="android:layout_height">@dimen/dp_28</item>
+  </style>
+  <!--键盘切换右侧发送按钮-->
+  <style name="keyboard_send_btn">
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">@dimen/dp_28</item>
+    <item name="android:paddingLeft">@dimen/dp_6</item>
+    <item name="android:paddingRight">@dimen/dp_6</item>
+    <item name="android:text">发送</item>
+    <item name="android:includeFontPadding">false</item>
+    <item name="android:button">@null</item>
+    <item name="android:textSize">@dimen/sp_15</item>
+    <item name="android:textColor">@android:color/white</item>
+    <item name="android:background">@drawable/selector_keyboard_send</item>
+  </style>
+
+  <!-- RichEditText输入框的样式-->
+  <style name="rich_editText">
+    <item name="android:layout_gravity">center_vertical</item>
+    <item name="android:layout_marginTop">@dimen/dp_5</item>
+    <item name="android:layout_marginBottom">@dimen/dp_5</item>
+    <item name="android:layout_weight">1</item>
+    <item name="android:textSize">@dimen/sp_16</item>
+    <item name="android:scrollbars">vertical</item>
+    <item name="android:maxHeight">@dimen/dp_120</item>
+    <item name="android:layout_width">0dp</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:background">@drawable/shape_edit_comment_bg</item>
+    <item name="android:padding">@dimen/dp_7</item>
+  </style>
+  
+  <!--键盘弹窗的样式-->
+  <style name="keyboard_dialog_theme" parent="@android:style/Theme.Dialog">
+    <!--是否浮在界面上-->
+    <item name="android:windowIsFloating">true</item>
+    <!--是否半透明-->
+    <item name="android:windowIsTranslucent">true</item>
+    <!--是否去除标题 -->
+    <item name="android:windowNoTitle">false</item>
+    <!--窗口背景色透明-->
+    <item name="android:windowBackground">@android:color/transparent</item>
+    <!--背景是否模糊显示-->
+    <item name="android:backgroundDimEnabled">true</item>
+    <!--是否去除边框-->
+    <item name="android:windowFrame">@null</item>
+  </style>
+
+</resources>
