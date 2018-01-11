@@ -27,11 +27,6 @@ public class TopicActivity extends AppCompatActivity implements View.OnClickList
     findViewById(R.id.tv_1).setOnClickListener(this);
     findViewById(R.id.tv_2).setOnClickListener(this);
     findViewById(R.id.tv_3).setOnClickListener(this);
-    findViewById(R.id.btn_set).setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-et.setVisibility(View.VISIBLE);
-      }
-    });
 
     et.setOnKeyListener(new View.OnKeyListener() {
       @Override public boolean onKey(View v, int keyCode, KeyEvent keyEvent) {
