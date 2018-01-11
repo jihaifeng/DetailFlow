@@ -2,6 +2,7 @@ package com.meechao.detailflow.adapter;
 
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.meechao.detailflow.R;
+import com.meechao.detailflow.utils.LogUtils;
 import java.util.List;
 
 /**
@@ -20,6 +21,7 @@ public class EmojiKeyboardAdapter extends BaseKeyBoardAdapter<String, BaseViewHo
   }
 
   @Override protected void convert(BaseViewHolder helper, String item) {
+    LogUtils.i(TAG, "convert: "+item);
     helper.setText(R.id.tv_emoji, item);
   }
 }

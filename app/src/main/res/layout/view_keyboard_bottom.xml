@@ -92,4 +92,19 @@
         android:orientation="horizontal"/>
 
   </LinearLayout>
+
+  <LinearLayout
+      android:id="@+id/ll_keyboard_root2"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@color/white"
+      android:gravity="center_vertical"
+      android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:text="Topic"
+        android:layout_height="wrap_content"/>
+
+  </LinearLayout>
 </LinearLayout>

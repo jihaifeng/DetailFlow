@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr format="reference" name="FaceTextInputLayoutStyle"/>
+    <declare-styleable name="FaceTextInputLayout"><attr format="dimension" name="indicatorSpacing"/><attr format="reference" name="selectedSrc"/><attr format="reference" name="unselectedSrc"/><attr format="dimension" name="faceTextViewLeftMargin"/><attr format="dimension" name="faceTextViewRightMargin"/></declare-styleable>
+    <string name="app_name">YanWenZiLayout</string>
+</resources>

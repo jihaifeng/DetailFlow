@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:gravity="bottom"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
+  <android.support.v7.widget.RecyclerView
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:id="@+id/rcv_list"
+      android:layout_weight="1"/>
 
-    <include
-        layout="@layout/view_keyboard_bottom"
-        android:id="@+id/view_keyboard"/>
+  <include
+      layout="@layout/view_keyboard_bottom"
+      android:id="@+id/view_keyboard"/>
 
-</RelativeLayout>
+</LinearLayout>

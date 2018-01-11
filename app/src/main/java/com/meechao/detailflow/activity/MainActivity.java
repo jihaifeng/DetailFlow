@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
   @Bind (R.id.btn_list) Button btnList;
   @Bind (R.id.btn_topic) Button btnTopic;
   @Bind (R.id.btn_keyboard) Button btnKeyboard;
+  @Bind (R.id.btn_face_text) Button btnFaceText;
+  @Bind (R.id.btn_emoji) Button btnEmoji;
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -33,7 +35,8 @@ public class MainActivity extends AppCompatActivity {
     DisplayUtils.init(this);
   }
 
-  @OnClick ({ R.id.btn_list, R.id.btn_topic, R.id.btn_keyboard }) public void onClick(View view) {
+  @OnClick ({ R.id.btn_list, R.id.btn_topic, R.id.btn_keyboard, R.id.btn_face_text, R.id.btn_emoji })
+  public void onClick(View view) {
     switch (view.getId()) {
       case R.id.btn_list:
         to(ItemListActivity.class);
@@ -44,11 +47,16 @@ public class MainActivity extends AppCompatActivity {
       case R.id.btn_keyboard:
         to(KeyBoardActivity.class);
         break;
+      case R.id.btn_face_text:
+        to(FaceLayoutDemoActivity.class);
+        break;
+      case R.id.btn_emoji:
+        to(EmojiLayoutDemoActivity.class);
+        break;
     }
   }
 
   private void to(Class cls) {
     startActivity(new Intent(this, cls));
   }
-
 }

@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/DetailFlow.iml" filepath="$PROJECT_DIR$/DetailFlow.iml" />
+      <module fileurl="file://$PROJECT_DIR$/KeyBoardTextLayout/KeyBoardTextLayout.iml" filepath="$PROJECT_DIR$/KeyBoardTextLayout/KeyBoardTextLayout.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/smartkeyboard/smartkeyboard.iml" filepath="$PROJECT_DIR$/smartkeyboard/smartkeyboard.iml" />
     </modules>
   </component>
 </project>

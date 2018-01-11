@@ -47,6 +47,9 @@
 
     <activity android:name=".activity.TopicActivity"/>
 
+    <activity android:name=".activity.FaceLayoutDemoActivity"/>
+
+    <activity android:name=".activity.EmojiLayoutDemoActivity"/>
   </application>
 
 </manifest>

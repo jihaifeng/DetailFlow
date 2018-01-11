@@ -19,8 +19,9 @@ import com.meechao.detailflow.adapter.EmojiKeyboardAdapter;
 import com.meechao.detailflow.adapter.KeyboardViewPagerAdapter;
 import com.meechao.detailflow.richText.TEditText;
 import com.meechao.detailflow.utils.AssetUtils;
-import com.meechao.detailflow.utils.InputMethodUtils;
 import com.meechao.detailflow.utils.RcvInitUtils;
+import com.meechao.smartkeyboard.OnContentViewScrollListener;
+import com.meechao.smartkeyboard.SmartKeyboardManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +46,9 @@ public class KeyBoardActivity extends AppCompatActivity {
   @Bind (R.id.ll_dot) LinearLayout llDot;
   @Bind (R.id.view_keyboard) View viewKeyboard;
   @Bind (R.id.ll_keyboard_root) LinearLayout llkeyboardRoot;
+  @Bind (R.id.rcv_list) RecyclerView rcvList;
+
+  @Bind (R.id.ll_keyboard_root2) LinearLayout llkeyboardRoot2;
 
   private List<String> emojiData;
   private int pageCount;
@@ -54,6 +58,8 @@ public class KeyBoardActivity extends AppCompatActivity {
    * 当前显示的是第几页
    */
   private int curIndex = 0;
+
+  private SmartKeyboardManager mSmartKeyboardManager;
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -82,21 +88,32 @@ public class KeyBoardActivity extends AppCompatActivity {
     viewpagerKeyboard.setAdapter(new KeyboardViewPagerAdapter(viewPagerList));
     setOvalLayout();
 
-    InputMethodUtils.detectKeyboard(this, null);
+    //InputMethodUtils.detectKeyboard(this, null);
 
-    rbKeybordEmoji.setOnClickListener(new View.OnClickListener() {
-      @Override public void onClick(View v) {
-        if (InputMethodUtils.isKeyboardShowing()) {
-          InputMethodUtils.showInputMethod(viewKeyboard, 200);
-          llkeyboardRoot.setVisibility(View.GONE);
-          rbKeybordEmoji.setChecked(true);
-        } else {
-          InputMethodUtils.hideKeyboard(viewKeyboard);
-          llkeyboardRoot.setVisibility(View.VISIBLE);
-          rbKeybordEmoji.setChecked(false);
-        }
-      }
-    });
+    //rbKeybordEmoji.setOnClickListener(new View.OnClickListener() {
+    //  @Override public void onClick(View v) {
+    //    if (InputMethodUtils.isKeyboardShowing()) {
+    //      InputMethodUtils.showInputMethod(viewKeyboard, 200);
+    //      llkeyboardRoot.setVisibility(View.GONE);
+    //      rbKeybordEmoji.setChecked(true);
+    //    } else {
+    //      InputMethodUtils.hideKeyboard(viewKeyboard);
+    //      llkeyboardRoot.setVisibility(View.VISIBLE);
+    //      rbKeybordEmoji.setChecked(false);
+    //    }
+    //  }
+    //});
+
+    mSmartKeyboardManager = new SmartKeyboardManager.Builder(this).setContentView(rcvList)
+        .addKeyboard(rbKeybordEmoji, llkeyboardRoot)
+        .addKeyboard(rbKeybordTopicTag, llkeyboardRoot2)
+        .setEditText(keyboardRichInput)
+        .addOnContentViewScrollListener(new OnContentViewScrollListener() {
+          @Override public void needScroll(int distance) {
+            rcvList.scrollBy(0, distance);
+          }
+        })
+        .create();
   }
 
   /**
@@ -137,5 +154,11 @@ public class KeyBoardActivity extends AppCompatActivity {
 
       }
     });
+  }
+
+  @Override public void onBackPressed() {
+    if (!mSmartKeyboardManager.interceptBackPressed()) {
+      super.onBackPressed();
+    }
   }
 }

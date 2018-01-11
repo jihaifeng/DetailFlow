@@ -22,4 +22,15 @@
       android:layout_height="wrap_content"
       android:text="keyboard"/>
 
+
+  <Button
+      android:id="@+id/btn_face_text"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="Face"/>
+  <Button
+      android:id="@+id/btn_emoji"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="Emoji"/>
 </LinearLayout>
