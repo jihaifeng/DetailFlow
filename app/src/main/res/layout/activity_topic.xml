@@ -72,17 +72,11 @@
       android:layout_height="wrap_content"
       android:textColor="@color/red"/>
 
-  <TextView
+  <com.meechao.detailflow.wedget.HorizontalMarqueeTextView
       android:id="@+id/tv_table_name"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:singleLine="true"
-      android:focusable="true"
-      android:focusableInTouchMode="true"
-      android:text="就算对方角度来看积分卡撒娇福克斯的缴费基数大幅减少贷款房价跌幅扩大解放打算开发建设的方式登记方式的开发建设贷款的司法鉴定收费的"
       android:textColor="@color/red"
       android:marqueeRepeatLimit="marquee_forever"
-      android:ellipsize="marquee"
-      android:textSize="18sp"
-      android:textStyle="bold" />
+      android:textSize="18sp" />
 </LinearLayout>

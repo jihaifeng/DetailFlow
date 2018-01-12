@@ -16,10 +16,12 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import com.meechao.detailflow.R;
 import com.meechao.detailflow.adapter.EmojiKeyboardAdapter;
-import com.meechao.detailflow.adapter.KeyboardViewPagerAdapter;
+import com.meechao.detailflow.entity.LivingLabelBean;
+import com.meechao.detailflow.entity.TopicBean;
 import com.meechao.detailflow.richText.TEditText;
 import com.meechao.detailflow.utils.AssetUtils;
 import com.meechao.detailflow.utils.RcvInitUtils;
+import com.meechao.detailflow.wedget.viewPager.AutoHeightViewPagerAdapter;
 import com.meechao.smartkeyboard.OnContentViewScrollListener;
 import com.meechao.smartkeyboard.SmartKeyboardManager;
 import java.util.ArrayList;
@@ -36,21 +38,27 @@ public class KeyBoardActivity extends AppCompatActivity {
 
   private static final String TAG = "EmojiKeyboard";
 
+  @Bind (R.id.view_keyboard) View viewKeyboard;
+  @Bind (R.id.rcv_list) RecyclerView rcvList;
   @Bind (R.id.rb_keybord_emoji) RadioButton rbKeybordEmoji;
   @Bind (R.id.keyboard_rich_input) TEditText keyboardRichInput;
   @Bind (R.id.rb_keybord_topic_tag) RadioButton rbKeybordTopicTag;
   @Bind (R.id.rb_send) RadioButton rbSend;
   @Bind (R.id.rg_keyboard) RadioGroup rgKeyboard;
   @Bind (R.id.text_length) TextView textLength;
-  @Bind (R.id.viewpager_keyboard) ViewPager viewpagerKeyboard;
+  @Bind (R.id.emoji_viewpager) ViewPager emojiViewpager;
   @Bind (R.id.ll_dot) LinearLayout llDot;
-  @Bind (R.id.view_keyboard) View viewKeyboard;
-  @Bind (R.id.ll_keyboard_root) LinearLayout llkeyboardRoot;
-  @Bind (R.id.rcv_list) RecyclerView rcvList;
-
-  @Bind (R.id.ll_keyboard_root2) LinearLayout llkeyboardRoot2;
+  @Bind (R.id.ll_keyboard_emoji) LinearLayout llKeyboardEmoji;
+  @Bind (R.id.tag_viewpager) ViewPager tagViewpager;
+  @Bind (R.id.ll_keyboard_tag) LinearLayout llKeyboardTag;
+  @Bind (R.id.topic_viewpager) ViewPager topicViewpager;
+  @Bind (R.id.ll_keyboard_topic) LinearLayout llKeyboardTopic;
 
   private List<String> emojiData;
+  private List<LivingLabelBean> livingLabelDatas;
+  private List<TopicBean> topicDatas;
+
+
   private int pageCount;
   private List<View> viewPagerList;
   private int rows = 4, columns = 6;
@@ -80,33 +88,18 @@ public class KeyBoardActivity extends AppCompatActivity {
     }
 
     for (int i = 0; i < pageCount; i++) {
-      RecyclerView recyclerView = new RecyclerView(this);
+      View view = LayoutInflater.from(this).inflate(R.layout.keyboard_view, null, false);
+      RecyclerView recyclerView = view.findViewById(R.id.rcv_keyboard);
       EmojiKeyboardAdapter emojiKeyboardAdapter = new EmojiKeyboardAdapter(emojiData, i, rows * columns);
       RcvInitUtils.initGridRcv(this, recyclerView, columns, emojiKeyboardAdapter);
-      viewPagerList.add(recyclerView);
+      viewPagerList.add(view);
     }
-    viewpagerKeyboard.setAdapter(new KeyboardViewPagerAdapter(viewPagerList));
-    setOvalLayout();
-
-    //InputMethodUtils.detectKeyboard(this, null);
-
-    //rbKeybordEmoji.setOnClickListener(new View.OnClickListener() {
-    //  @Override public void onClick(View v) {
-    //    if (InputMethodUtils.isKeyboardShowing()) {
-    //      InputMethodUtils.showInputMethod(viewKeyboard, 200);
-    //      llkeyboardRoot.setVisibility(View.GONE);
-    //      rbKeybordEmoji.setChecked(true);
-    //    } else {
-    //      InputMethodUtils.hideKeyboard(viewKeyboard);
-    //      llkeyboardRoot.setVisibility(View.VISIBLE);
-    //      rbKeybordEmoji.setChecked(false);
-    //    }
-    //  }
-    //});
+    emojiViewpager.setAdapter(new AutoHeightViewPagerAdapter(viewPagerList));
 
     mSmartKeyboardManager = new SmartKeyboardManager.Builder(this).setContentView(rcvList)
-        .addKeyboard(rbKeybordEmoji, llkeyboardRoot)
-        .addKeyboard(rbKeybordTopicTag, llkeyboardRoot2)
+        .addKeyboard(rbKeybordEmoji, llKeyboardEmoji)
+        .addKeyboard(rbKeybordTopicTag, llKeyboardTag)
+        .addKeyboard(rbKeybordTopicTag, llKeyboardTag)
         .setEditText(keyboardRichInput)
         .addOnContentViewScrollListener(new OnContentViewScrollListener() {
           @Override public void needScroll(int distance) {
@@ -114,6 +107,11 @@ public class KeyBoardActivity extends AppCompatActivity {
           }
         })
         .create();
+
+    livingLabelDatas = AssetUtils.getLivingTag();
+
+    topicDatas = AssetUtils.getTopic();
+
   }
 
   /**
@@ -133,7 +131,7 @@ public class KeyBoardActivity extends AppCompatActivity {
     }
     // 默认显示第一页
     llDot.getChildAt(0).findViewById(R.id.v_dot).setBackgroundResource(R.drawable.shape_circle_indicator_orange);
-    viewpagerKeyboard.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+    emojiViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
       @Override public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
       }
@@ -154,11 +152,5 @@ public class KeyBoardActivity extends AppCompatActivity {
 
       }
     });
-  }
-
-  @Override public void onBackPressed() {
-    if (!mSmartKeyboardManager.interceptBackPressed()) {
-      super.onBackPressed();
-    }
   }
 }

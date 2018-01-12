@@ -70,7 +70,7 @@
   </LinearLayout>
 
   <LinearLayout
-      android:id="@+id/ll_keyboard_root"
+      android:id="@+id/ll_keyboard_emoji"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:background="@color/white"
@@ -78,9 +78,10 @@
       android:orientation="vertical">
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager_keyboard"
+        android:id="@+id/emoji_viewpager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/blue"
         android:overScrollMode="never"/>
 
     <LinearLayout
@@ -94,17 +95,35 @@
   </LinearLayout>
 
   <LinearLayout
-      android:id="@+id/ll_keyboard_root2"
+      android:id="@+id/ll_keyboard_tag"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:background="@color/white"
       android:gravity="center_vertical"
       android:orientation="vertical">
 
-    <TextView
+    <android.support.v4.view.ViewPager
+        android:id="@+id/tag_viewpager"
         android:layout_width="match_parent"
-        android:text="Topic"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"/>
+
+  </LinearLayout>
+
+  <LinearLayout
+      android:id="@+id/ll_keyboard_topic"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@color/white"
+      android:visibility="gone"
+      android:gravity="center_vertical"
+      android:orientation="vertical">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/topic_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"/>
 
   </LinearLayout>
 </LinearLayout>

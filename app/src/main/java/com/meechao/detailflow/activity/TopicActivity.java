@@ -6,6 +6,7 @@ import android.text.Editable;
 import android.text.style.ForegroundColorSpan;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.TextView;
 import com.meechao.detailflow.R;
 import com.meechao.detailflow.richText.TEditText;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 public class TopicActivity extends AppCompatActivity implements View.OnClickListener {
 
   private TEditText et;
-
+private TextView tv;
   private ArrayList<ForegroundColorSpan> mColorSpans = new ArrayList<>();
   private ArrayList<String> mTopicList = new ArrayList<>();
   // 正则表达式
@@ -22,6 +23,9 @@ public class TopicActivity extends AppCompatActivity implements View.OnClickList
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_topic);
+    tv = findViewById(R.id.tv_table_name);
+    tv.setText(
+        "就算对方角度来看积分卡撒娇福克斯的缴费基数大幅减少贷款房价跌幅扩大解放打算开发建设的方式登记方式的开发建设贷款的司法鉴定收费的");
     et = findViewById(R.id.et_content);
     findViewById(R.id.tv_0).setOnClickListener(this);
     findViewById(R.id.tv_1).setOnClickListener(this);
@@ -30,7 +34,7 @@ public class TopicActivity extends AppCompatActivity implements View.OnClickList
 
     et.setOnKeyListener(new View.OnKeyListener() {
       @Override public boolean onKey(View v, int keyCode, KeyEvent keyEvent) {
-        if (keyCode == KeyEvent.KEYCODE_DEL && keyEvent.getAction() == KeyEvent.ACTION_DOWN ) {
+        if (keyCode == KeyEvent.KEYCODE_DEL && keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
 
           int selectionStart = et.getSelectionStart();
           int selectionEnd = et.getSelectionEnd();

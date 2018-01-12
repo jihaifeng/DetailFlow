@@ -4,6 +4,8 @@ import android.text.TextUtils;
 import com.alibaba.fastjson.JSON;
 import com.meechao.detailflow.App;
 import com.meechao.detailflow.entity.EmojiBean;
+import com.meechao.detailflow.entity.LivingLabelBean;
+import com.meechao.detailflow.entity.TopicBean;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,6 +31,30 @@ public class AssetUtils {
       return null;
     }
     return bean.getEmoji_list();
+  }
+
+  public static List<LivingLabelBean> getLivingTag() {
+    String tagData = getAssetsData("living_tag_json.json");
+    if (TextUtils.isEmpty(tagData)) {
+      return null;
+    }
+    List<LivingLabelBean> bean = JSON.parseArray(tagData, LivingLabelBean.class);
+    if (null == bean) {
+      return null;
+    }
+    return bean;
+  }
+
+  public static List<TopicBean> getTopic() {
+    String topicData = getAssetsData("topic_json.json");
+    if (TextUtils.isEmpty(topicData)) {
+      return null;
+    }
+    List<TopicBean> bean = JSON.parseArray(topicData, TopicBean.class);
+    if (null == bean) {
+      return null;
+    }
+    return bean;
   }
 
   public static String getAssetsData(String assetsFileName) {

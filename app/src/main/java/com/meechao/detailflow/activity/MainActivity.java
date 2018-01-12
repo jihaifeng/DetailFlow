@@ -11,6 +11,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.meechao.detailflow.R;
 import com.meechao.detailflow.utils.DisplayUtils;
+import com.meechao.detailflow.utils.ImageUtils;
 import com.meechao.detailflow.utils.ScreenUtil;
 
 /**
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     ButterKnife.bind(this);
     ScreenUtil.getInstance(this);
     DisplayUtils.init(this);
+    ImageUtils.init(this);
   }
 
   @OnClick ({ R.id.btn_list, R.id.btn_topic, R.id.btn_keyboard, R.id.btn_face_text, R.id.btn_emoji })
