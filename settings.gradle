@@ -1,1 +1,1 @@
-include ':app', ':smartkeyboard', 'KeyBoardTextLayout'
+include ':app'

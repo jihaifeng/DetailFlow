@@ -3,6 +3,7 @@ package com.meechao.detailflow.utils;
 import android.text.TextUtils;
 import com.alibaba.fastjson.JSON;
 import com.meechao.detailflow.App;
+import com.meechao.detailflow.entity.CollectionTopic;
 import com.meechao.detailflow.entity.EmojiBean;
 import com.meechao.detailflow.entity.LivingLabelBean;
 import com.meechao.detailflow.entity.TopicBean;
@@ -45,12 +46,24 @@ public class AssetUtils {
     return bean;
   }
 
-  public static List<TopicBean> getTopic() {
-    String topicData = getAssetsData("topic_json.json");
+  public static List<TopicBean> getArticleTopic() {
+    String topicData = getAssetsData("article_topic.json");
     if (TextUtils.isEmpty(topicData)) {
       return null;
     }
     List<TopicBean> bean = JSON.parseArray(topicData, TopicBean.class);
+    if (null == bean) {
+      return null;
+    }
+    return bean;
+  }
+
+  public static List<CollectionTopic> getCollectionTopic() {
+    String topicData = getAssetsData("collection_topic.json");
+    if (TextUtils.isEmpty(topicData)) {
+      return null;
+    }
+    List<CollectionTopic> bean = JSON.parseArray(topicData, CollectionTopic.class);
     if (null == bean) {
       return null;
     }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <LinearLayout
+      android:id="@+id/ll_keyboard_collection_topic"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:background="@color/color_f5f5f7"
+      android:gravity="center_vertical"
+      android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+      <com.meechao.detailflow.wedget.flowView.PageFlowView
+          android:layout_width="match_parent"
+          android:id="@+id/pfv_topic"
+          android:layout_height="wrap_content"
+          android:layout_centerInParent="true"
+          app:maxRows="3"/>
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rcv_collection_topic_class"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+  </LinearLayout>
+
+</merge>

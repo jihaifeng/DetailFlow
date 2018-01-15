@@ -22,15 +22,35 @@
       android:layout_height="wrap_content"
       android:text="keyboard"/>
 
-
   <Button
       android:id="@+id/btn_face_text"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:text="Face"/>
+
   <Button
       android:id="@+id/btn_emoji"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:text="Emoji"/>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      android:orientation="vertical">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rcv_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <com.meechao.detailflow.wedget.keyboard.KeyboardLayout
+        android:id="@+id/rich_keyboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"/>
+  </LinearLayout>
+
 </LinearLayout>

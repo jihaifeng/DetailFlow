@@ -37,8 +37,6 @@ dependencies {
   implementation 'com.alibaba:fastjson:1.1.67.android'
   // recyclerView万能适配器
   implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
-  compile project(path: ':KeyBoardTextLayout')
-  implementation project(':smartkeyboard')
   // Glide 图片加载
   implementation 'com.github.bumptech.glide:glide:3.7.0'
 }

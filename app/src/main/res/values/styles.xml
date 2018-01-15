@@ -21,6 +21,13 @@
     <item name="android:layout_height">@dimen/dp_1</item>
     <item name="android:layout_width">match_parent</item>
   </style>
+
+  <style name="vertical_line_cccccc">
+    <item name="android:background">@color/color_ffcccccc</item>
+    <item name="android:layout_height">match_parent</item>
+    <item name="android:layout_width">@dimen/dp_0.5</item>
+  </style>
+
   <!--键盘切换的按钮样式-->
   <style name="keybord_radioButton">
     <item name="android:button">@null</item>
@@ -71,5 +78,11 @@
     <!--是否去除边框-->
     <item name="android:windowFrame">@null</item>
   </style>
+
+  <declare-styleable name="PageFlowView">
+    <attr name="indicatorMargin" format="dimension"/>
+    <attr name="maxRows" format="integer"/>
+    <attr name="maxPages" format="integer"/>
+  </declare-styleable>
 
 </resources>

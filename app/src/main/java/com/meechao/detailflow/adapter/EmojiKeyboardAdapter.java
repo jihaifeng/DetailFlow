@@ -14,8 +14,6 @@ import java.util.List;
  */
 public class EmojiKeyboardAdapter extends BaseKeyBoardAdapter<String, BaseViewHolder> {
 
-  private List<String> emojiDatas;
-
   public EmojiKeyboardAdapter(List<String> emojiData, int curIndex, int pageSize) {
     super(R.layout.item_emoji_keyboard,emojiData, curIndex, pageSize);
   }

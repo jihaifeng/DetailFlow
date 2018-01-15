@@ -1,6 +1,7 @@
 package com.meechao.detailflow.utils;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
@@ -46,6 +47,15 @@ public class RcvInitUtils {
     mRcv.setOverScrollMode(View.OVER_SCROLL_NEVER);
     mRcv.addItemDecoration(new FlowLayoutItemDecoration(ScreenUtil.dip2px(10)));
     mRcv.setLayoutManager(flowLayoutManager);
+    mRcv.setAdapter(mAdapter);
+  }
+
+  // 初始化一般横向RecyclerView
+  public static void initHorizontalRcv(Context context, RecyclerView mRcv, RecyclerView.Adapter mAdapter) {
+    mRcv.setHasFixedSize(true);
+    mRcv.setNestedScrollingEnabled(false);
+    mRcv.setOverScrollMode(View.OVER_SCROLL_NEVER);
+    mRcv.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
     mRcv.setAdapter(mAdapter);
   }
 }

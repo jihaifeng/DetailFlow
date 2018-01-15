@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import butterknife.Bind;
@@ -13,6 +14,7 @@ import com.meechao.detailflow.R;
 import com.meechao.detailflow.utils.DisplayUtils;
 import com.meechao.detailflow.utils.ImageUtils;
 import com.meechao.detailflow.utils.ScreenUtil;
+import com.meechao.detailflow.wedget.keyboard.KeyboardLayout;
 
 /**
  * Func：
@@ -27,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
   @Bind (R.id.btn_keyboard) Button btnKeyboard;
   @Bind (R.id.btn_face_text) Button btnFaceText;
   @Bind (R.id.btn_emoji) Button btnEmoji;
-
+  @Bind (R.id.rich_keyboard) KeyboardLayout richKeyboard;
+  @Bind (R.id.rcv_list) RecyclerView rcvList;
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
@@ -35,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     ScreenUtil.getInstance(this);
     DisplayUtils.init(this);
     ImageUtils.init(this);
+
+    richKeyboard.setKeyBoardManager(this,rcvList,null);
   }
 
   @OnClick ({ R.id.btn_list, R.id.btn_topic, R.id.btn_keyboard, R.id.btn_face_text, R.id.btn_emoji })
@@ -50,10 +55,10 @@ public class MainActivity extends AppCompatActivity {
         to(KeyBoardActivity.class);
         break;
       case R.id.btn_face_text:
-        to(FaceLayoutDemoActivity.class);
+        //to(FaceLayoutDemoActivity.class);
         break;
       case R.id.btn_emoji:
-        to(EmojiLayoutDemoActivity.class);
+        //to(EmojiLayoutDemoActivity.class);
         break;
     }
   }
