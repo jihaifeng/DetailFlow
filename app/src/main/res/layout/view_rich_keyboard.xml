@@ -12,4 +12,7 @@
 
   <!--合集话题键盘-->
   <include layout="@layout/view_topic_keyboard"/>
+
+  <!--场景标签键盘-->
+  <include layout="@layout/view_living_tag_keyboard"/>
 </LinearLayout>

@@ -16,8 +16,15 @@
   <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
   <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
   <style name="horizontal_line_normal">
-    <item name="android:background">@color/color_f6f6f9</item>
+    <item name="android:background">@color/color_d7d7d7</item>
+    <item name="android:layout_height">@dimen/dp_1</item>
+    <item name="android:layout_width">match_parent</item>
+  </style>
+
+  <style name="horizontal_line_d7d7d7">
+    <item name="android:background">@color/color_d7d7d7</item>
     <item name="android:layout_height">@dimen/dp_1</item>
     <item name="android:layout_width">match_parent</item>
   </style>
@@ -61,8 +68,9 @@
     <item name="android:layout_height">wrap_content</item>
     <item name="android:background">@drawable/shape_edit_comment_bg</item>
     <item name="android:padding">@dimen/dp_7</item>
+    <item name="android:layout_marginLeft">@dimen/dp_15</item>
   </style>
-  
+
   <!--键盘弹窗的样式-->
   <style name="keyboard_dialog_theme" parent="@android:style/Theme.Dialog">
     <!--是否浮在界面上-->
@@ -80,9 +88,9 @@
   </style>
 
   <declare-styleable name="PageFlowView">
-    <attr name="indicatorMargin" format="dimension"/>
-    <attr name="maxRows" format="integer"/>
-    <attr name="maxPages" format="integer"/>
+    <attr format="dimension" name="indicatorMargin"/>
+    <attr format="integer" name="maxRows"/>
+    <attr format="integer" name="maxPages"/>
   </declare-styleable>
 
 </resources>

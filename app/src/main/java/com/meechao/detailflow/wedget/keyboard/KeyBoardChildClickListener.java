@@ -1,6 +1,7 @@
 package com.meechao.detailflow.wedget.keyboard;
 
 import android.widget.RadioButton;
+import com.meechao.detailflow.entity.LivingLabelBean;
 
 /**
  * Func：
@@ -11,13 +12,13 @@ import android.widget.RadioButton;
  */
 public interface KeyBoardChildClickListener {
 
-  void onTopicClick(String topicStr);
+  void onTopicItemClick(String topicStr);
 
-  void onEmojiClick(String emojiStr);
+  void onEmojiItemClick(String emojiStr);
+
+  void onLivingItemClick(LivingLabelBean livingLabelBean);
 
   void onSend(String content);
 
-  void onEmojiStateChanged(RadioButton rbEmojiBtn);
-
-  void onTopicStateChanged(RadioButton rbTopicBtn);
+  void onBtnStateChanged(RadioButton rbEmojiBtn,RadioButton rbTopicBtn,RadioButton rbLivingBtn);
 }

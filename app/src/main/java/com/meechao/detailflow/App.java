@@ -1,6 +1,10 @@
 package com.meechao.detailflow;
 
 import android.app.Application;
+import butterknife.ButterKnife;
+import com.meechao.detailflow.utils.DisplayUtils;
+import com.meechao.detailflow.utils.ImageUtils;
+import com.meechao.detailflow.utils.ScreenUtil;
 
 /**
  * Func：
@@ -29,6 +33,9 @@ public class App extends Application {
 
   private void init() {
     setInstance(this);
+    ScreenUtil.getInstance(this);
+    DisplayUtils.init(this);
+    ImageUtils.init(this);
     //// 异常日志搜集处理
     //CrashHandler.getInstance().init(getApplicationContext());
     //// 设置日志类是否显示
