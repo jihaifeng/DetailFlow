@@ -1,23 +1,21 @@
 package com.meechao.detailflow.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
+import android.widget.ScrollView;
 import android.widget.Toast;
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.meechao.detailflow.R;
 import com.meechao.detailflow.entity.LivingLabelBean;
 import com.meechao.detailflow.richText.TEditText;
 import com.meechao.detailflow.utils.AssetUtils;
+import com.meechao.detailflow.wedget.WheelSelectDialog;
 import com.meechao.detailflow.wedget.keyboard.KeyBoardChildClickListener;
 import com.meechao.detailflow.wedget.keyboard.KeyboardLayout;
+import java.util.Arrays;
 
 /**
  * Func：
@@ -26,24 +24,36 @@ import com.meechao.detailflow.wedget.keyboard.KeyboardLayout;
  * Date：2018-01-09 13:53
  * Mail：jihaifeng@meechao.com
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
   @Bind (R.id.btn_list) Button btnList;
   @Bind (R.id.btn_topic) Button btnTopic;
   @Bind (R.id.btn_keyboard) Button btnKeyboard;
   @Bind (R.id.btn_face_text) Button btnFaceText;
   @Bind (R.id.btn_emoji) Button btnEmoji;
-  @Bind (R.id.rich_keyboard) KeyboardLayout richKeyboard;
-  @Bind (R.id.rcv_list) RecyclerView rcvList;
+  @Bind (R.id.rcv_list) ScrollView rcvList;
   @Bind (R.id.edit_input) TEditText editInput;
+  @Bind (R.id.rich_keyboard) KeyboardLayout richKeyboard;
 
-  @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
-    ButterKnife.bind(this);
+  //@Override protected void onCreate(@Nullable Bundle savedInstanceState) {
+  //  super.onCreate(savedInstanceState);
+  //  setContentView(R.layout.activity_main);
+  //
+  //}
+  String[] PLANETS = new String[] {
+      "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Uranus", "Neptune", "Pluto", "Venus", "Earth", "Mars", "Jupiter",
+      "Uranus", "Neptune", "Pluto", "Venus", "Earth", "Mars", "Jupiter", "Uranus", "Neptune", "Pluto", "Venus", "Earth",
+      "Mars", "Jupiter", "Uranus", "Neptune", "Pluto", "Venus", "Earth", "Mars", "Jupiter", "Uranus", "Neptune", "Pluto"
+  };
+  private WheelSelectDialog wheelSelectDialog;
 
-    richKeyboard.setKeyBoardManager(this, rcvList).setTopicBg(new int[] {
+  @Override protected int getLayoutId() {
+    return R.layout.activity_main;
+  }
+
+  @Override protected void initViewAndEvent() {
+    richKeyboard.setKeyBoardManager(this, rcvList, editInput).setTopicBg(new int[] {
         R.drawable.keyboard_question_normal, R.drawable.keyboard_normal
-    }).resetRb();
+    }).hideInput().hideSend().resetRb();
     //richKeyboard.setCollectionTopics(AssetUtils.getCollectionTopic());
     richKeyboard.setTopics(AssetUtils.getArticleTopic());
     richKeyboard.setOnChildClick(new KeyBoardChildClickListener() {
@@ -53,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
       @Override public void onEmojiItemClick(String emojiStr) {
         Toast.makeText(MainActivity.this, emojiStr, Toast.LENGTH_SHORT).show();
-
       }
 
       @Override public void onLivingItemClick(LivingLabelBean livingLabelBean) {
@@ -66,6 +75,25 @@ public class MainActivity extends AppCompatActivity {
 
       @Override public void onBtnStateChanged(RadioButton rbEmojiBtn, RadioButton rbTopicBtn, RadioButton rbLivingBtn) {
         Toast.makeText(MainActivity.this, "aa", Toast.LENGTH_SHORT).show();
+      }
+
+      @Override public void hideAllKeyboard() {
+        richKeyboard.setVisibility(View.GONE);
+      }
+
+      @Override public void showKeyboard() {
+        richKeyboard.setVisibility(View.VISIBLE);
+      }
+    });
+
+    wheelSelectDialog = new WheelSelectDialog(this);
+    wheelSelectDialog.setOnWheelListener(new WheelSelectDialog.onWheelListener() {
+      @Override public void select(int index, String text) {
+        Toast.makeText(MainActivity.this, text + "  index: " + index, Toast.LENGTH_SHORT).show();
+      }
+
+      @Override public void cancel() {
+
       }
     });
   }
@@ -83,10 +111,12 @@ public class MainActivity extends AppCompatActivity {
         to(KeyBoardActivity.class);
         break;
       case R.id.btn_face_text:
-        //to(FaceLayoutDemoActivity.class);
+        to(RecyclerViewActivity.class);
         break;
       case R.id.btn_emoji:
-        //to(EmojiLayoutDemoActivity.class);
+        wheelSelectDialog.show();
+        wheelSelectDialog.setData(Arrays.asList(PLANETS));
+        wheelSelectDialog.setTitle("啊啊啊啊啊啊");
         break;
     }
   }

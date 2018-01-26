@@ -22,15 +22,18 @@ import com.meechao.detailflow.adapter.keyBoardVpAdapter;
 import com.meechao.detailflow.entity.CollectionTopic;
 import com.meechao.detailflow.entity.LivingLabelBean;
 import com.meechao.detailflow.entity.TopicBean;
+import com.meechao.detailflow.keyboard.KeyboardUtils;
 import com.meechao.detailflow.richText.TEditText;
 import com.meechao.detailflow.utils.AssetUtils;
 import com.meechao.detailflow.utils.RcvInitUtils;
+import com.meechao.detailflow.wedget.WheelView;
 import com.meechao.detailflow.wedget.flowView.PageFlowView;
 import com.meechao.detailflow.wedget.flowView.PageScrollView;
 import com.meechao.detailflow.wedget.keyboard.smartKeyboard.OnContentViewScrollListener;
 import com.meechao.detailflow.wedget.keyboard.smartKeyboard.SmartKeyboardManager;
 import com.meechao.detailflow.wedget.viewPager.AutoCenterViewPager;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -61,6 +64,7 @@ public class KeyBoardActivity extends AppCompatActivity {
   @Bind (R.id.pfv_topic) PageFlowView pageFlowView;
   @Bind (R.id.rcv_collection_topic_class) RecyclerView rcvCollectionTopicClass;
   @Bind (R.id.ll_keyboard_collection_topic) LinearLayout llKeyboardCollectionTopic;
+  @Bind (R.id.wv) WheelView wv;
 
   private List<LivingLabelBean> livingLabelDatas;
   private List<TopicBean> topicDatas;
@@ -74,6 +78,8 @@ public class KeyBoardActivity extends AppCompatActivity {
   private int curIndex = 0;
 
   private SmartKeyboardManager mSmartKeyboardManager;
+  private static final String[] PLANETS =
+      new String[] { "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Uranus", "Neptune", "Pluto" };
 
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -82,6 +88,8 @@ public class KeyBoardActivity extends AppCompatActivity {
     initData();
     initEmojiKeyboard();
     initCollectionKeyboard(collectionTopics);
+
+    KeyboardUtils keyboadUtils = new KeyboardUtils(this);
 
     mSmartKeyboardManager = new SmartKeyboardManager.Builder(this).setContentView(rcvList)
         .addKeyboard(rbKeybordEmoji, llKeyboardEmoji)
@@ -93,6 +101,8 @@ public class KeyBoardActivity extends AppCompatActivity {
           }
         })
         .create();
+
+    wv.setData(Arrays.asList(PLANETS));
   }
 
   private void initData() {

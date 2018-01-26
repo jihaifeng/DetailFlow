@@ -20,5 +20,9 @@ public interface KeyBoardChildClickListener {
 
   void onSend(String content);
 
-  void onBtnStateChanged(RadioButton rbEmojiBtn,RadioButton rbTopicBtn,RadioButton rbLivingBtn);
+  void onBtnStateChanged(RadioButton rbEmojiBtn, RadioButton rbTopicBtn, RadioButton rbLivingBtn);
+
+  void  hideAllKeyboard();
+
+  void showKeyboard();
 }

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/dp_35"
+      android:orientation="horizontal">
+
+    <Button
+        android:id="@+id/btn_cancel"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_10"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/selector_btn"
+        android:text="取消"
+        android:textColor="@color/color_ffcccccc"/>
+
+    <TextView
+        android:id="@+id/tv_dialog_title"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@color/color_333333"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/btn_sure"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_10"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/selector_btn"
+        android:text="确定"
+        android:textColor="@color/color_03a94"/>
+  </LinearLayout>
+
+  <View
+      style="@style/horizontal_line_normal"/>
+
+  <com.meechao.detailflow.wedget.WheelView
+      android:id="@+id/wv"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"/>
+
+</LinearLayout>

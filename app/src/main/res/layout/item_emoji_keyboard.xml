@@ -10,5 +10,5 @@
       android:layout_centerInParent="true"
       android:includeFontPadding="false"
       android:padding="@dimen/dp_10"
-      android:textSize="@dimen/sp_20"/>
+      android:textSize="@dimen/sp_25"/>
 </RelativeLayout>

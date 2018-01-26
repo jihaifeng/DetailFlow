@@ -39,14 +39,13 @@ public class RcvInitUtils {
     mRcv.setAdapter(mAdapter);
   }
 
-  // 初始化标签键盘流式布局
-  public static void initTagKeyboardFlowRcv(Context context, RecyclerView mRcv, BaseQuickAdapter mAdapter,
-      FlowLayoutManager flowLayoutManager) {
+  // 初始化一般流式布局
+  public static void initFlowRcv(Context context, RecyclerView mRcv, BaseQuickAdapter mAdapter) {
     mRcv.setHasFixedSize(true);
     mRcv.setNestedScrollingEnabled(false);
     mRcv.setOverScrollMode(View.OVER_SCROLL_NEVER);
-    mRcv.addItemDecoration(new FlowLayoutItemDecoration(ScreenUtil.dip2px(10)));
-    mRcv.setLayoutManager(flowLayoutManager);
+    mRcv.addItemDecoration(new FlowLayoutItemDecoration(ScreenUtil.dip2px(5)));
+    mRcv.setLayoutManager(new FlowLayoutManager());
     mRcv.setAdapter(mAdapter);
   }
 

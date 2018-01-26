@@ -46,6 +46,7 @@
         android:windowSoftInputMode="adjustResize"/>
 
     <activity android:name=".activity.TopicActivity"/>
+    <activity android:name=".activity.RecyclerViewActivity"/>
 
   </application>
 

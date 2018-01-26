@@ -4,57 +4,81 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-  <Button
-      android:id="@+id/btn_list"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="itemList"/>
-
-  <Button
-      android:id="@+id/btn_topic"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="Topic"/>
-
-  <Button
-      android:id="@+id/btn_keyboard"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="keyboard"/>
-
-  <Button
-      android:id="@+id/btn_face_text"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="Face"/>
-
-  <Button
-      android:id="@+id/btn_emoji"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:text="Emoji"/>
-  <com.meechao.detailflow.richText.TEditText
-      android:layout_width="match_parent"
-      android:id="@+id/edit_input"
-      android:layout_height="@dimen/dp_40"/>
-
-  <LinearLayout
+  <RelativeLayout
       android:layout_width="match_parent"
       android:layout_height="0dp"
-      android:layout_weight="1"
-      android:orientation="vertical">
+      android:layout_weight="1">
 
-    <android.support.v7.widget.RecyclerView
+    <ScrollView
         android:id="@+id/rcv_list"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_height="match_parent"
+        >
 
-    <com.meechao.detailflow.wedget.keyboard.KeyboardLayout
-        android:id="@+id/rich_keyboard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"/>
-  </LinearLayout>
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="itemList"/>
+
+        <Button
+            android:id="@+id/btn_topic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Topic"/>
+
+        <Button
+            android:id="@+id/btn_keyboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="keyboard"/>
+
+        <Button
+            android:id="@+id/btn_face_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Face"/>
+
+        <Button
+            android:id="@+id/btn_emoji"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Emoji"/>
+
+        <com.meechao.detailflow.richText.TEditText
+            android:id="@+id/edit_input"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_40"/>
+
+        <com.meechao.detailflow.richText.TEditText
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_40"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_25"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/dp_13"
+            android:text="栋啊吼吼哦哈发货 "/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_25"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/dp_18"
+            android:text="栋啊吼吼哦哈发货 "/>
+
+      </LinearLayout>
+    </ScrollView>
+  </RelativeLayout>
+
+  <com.meechao.detailflow.wedget.keyboard.KeyboardLayout
+      android:id="@+id/rich_keyboard"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"/>
 
 </LinearLayout>

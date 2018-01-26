@@ -186,6 +186,7 @@ public class KeyboardLayout extends LinearLayout {
     setOvalLayout(llEmojiDot);
   }
 
+
   /**
    * 设置圆点
    */
@@ -364,6 +365,7 @@ public class KeyboardLayout extends LinearLayout {
         rbKeybordTopicTag.setVisibility(isNeedTopic ? VISIBLE : GONE);
         rbSend.setVisibility(isNeedSend ? VISIBLE : GONE);
         keyboardRichInput.setVisibility(isNeedInput ? VISIBLE : GONE);
+
         break;
     }
     if (null != onChildClickListener) {
@@ -407,36 +409,39 @@ public class KeyboardLayout extends LinearLayout {
   public void hideAll() {
     InputMethodUtils.hideKeyboard(null != mActivity ? mActivity.getCurrentFocus() : llKeyboardViewTitle);
     resetRb();
+    if (null != onChildClickListener){
+      onChildClickListener.hideAllKeyboard();
+    }
   }
 
   /**
    * 设置键盘智能切换
    *
    * @param activity 当前Activity
-   * @param recyclerView 可滑动的内容布局，一般在输入框上方
+   * @param contentView 可滑动的内容布局，一般在输入框上方
    */
-  public KeyboardLayout setKeyBoardManager(Activity activity, RecyclerView recyclerView) {
-    return this.setKeyBoardManager(activity, recyclerView, null);
+  public KeyboardLayout setKeyBoardManager(Activity activity, View contentView) {
+    return this.setKeyBoardManager(activity, contentView, null);
   }
 
   /**
    * 设置键盘智能切换
    *
    * @param activity 当前Activity
-   * @param recyclerView 可滑动的内容布局，一般在输入框上方
+   * @param contentView 可滑动的内容布局，一般在输入框上方
    * @param editText 输入框，如果null 则使用 默认的
    */
-  public KeyboardLayout setKeyBoardManager(Activity activity, RecyclerView recyclerView, TEditText editText) {
+  public KeyboardLayout setKeyBoardManager(Activity activity, View contentView, TEditText editText) {
     mActivity = activity;
     et = null == editText ? keyboardRichInput : editText;
-    mSmartKeyboardManager = new SmartKeyboardManager.Builder(activity).setContentView(recyclerView)
+    mSmartKeyboardManager = new SmartKeyboardManager.Builder(activity).setContentView(contentView)
         .addKeyboard(rbKeybordEmoji, llKeyboardEmoji)
         .addKeyboard(rbKeybordTopicTag, llKeyboardTopic)
         //.addKeyboard(rbKeybordLivingTag, llKeyboardLivingTag)
         .setEditText(et)
         .addOnContentViewScrollListener(new OnContentViewScrollListener() {
           @Override public void needScroll(int distance) {
-            recyclerView.scrollBy(0, distance);
+            contentView.scrollBy(0, distance);
           }
         })
         .create();
@@ -445,9 +450,12 @@ public class KeyboardLayout extends LinearLayout {
     new KeyboardChangeListener(activity).setKeyBoardListener((isShow, keyboardHeight) -> {
       if (isShow) {
         resetRb();
+        if (null != onChildClickListener){
+          onChildClickListener.showKeyboard();
+        }
       } else {
         if (!isEmojiShowing() && !isTopicShowing()) {
-          resetRb();
+        hideAll();
         }
       }
     });

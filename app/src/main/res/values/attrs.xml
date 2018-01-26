@@ -80,4 +80,34 @@
     <attr format="string" name="topic_regex"/>
   </declare-styleable>
 
+  <!--垂直滚动的选择器-->
+  <declare-styleable name="WheelView">
+    <!--每个item单元的高度-->
+    <attr format="dimension" name="unitHeight"/>
+    <!--此wheelView显示item的个数-->
+    <attr format="integer" name="itemNumber"/>
+    <!-- 未选中文本颜色-->
+    <attr format="color" name="normalTextColor"/>
+    <!--未选中文本字体大小-->
+    <attr format="dimension" name="normalTextSize"/>
+    <!-- 选中文本颜色-->
+    <attr format="color" name="selectedTextColor"/>
+    <!--选中文本字体大小-->
+    <attr format="dimension" name="selectedTextSize"/>
+    <!--是否循环滚动-->
+    <attr format="boolean" name="isCyclic"/>
+    <!--分割线颜色-->
+    <attr format="color" name="lineColor"/>
+    <!--分割线高度-->
+    <attr format="dimension" name="lineHeight"/>
+    <!--设置true则选中不能为空，否则可以是空-->
+    <attr format="boolean" name="noEmpty"/>
+    <!--wheelView是否可用-->
+    <attr format="boolean" name="isEnable"/>
+    <!--离选中位置远的遮罩颜色-->
+    <attr format="color" name="maskDarkColor"/>
+    <!--离选中位置近的遮罩颜色-->
+    <attr format="color" name="maskLightColor"/>
+  </declare-styleable>
+
 </resources>
