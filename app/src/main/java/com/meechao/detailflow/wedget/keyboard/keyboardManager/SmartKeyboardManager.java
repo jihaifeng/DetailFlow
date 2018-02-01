@@ -1,4 +1,4 @@
-package com.meechao.detailflow.wedget.keyboard.smartKeyboard;
+package com.meechao.detailflow.wedget.keyboard.keyboardManager;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -18,8 +18,10 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import com.meechao.detailflow.utils.DisplayUtils;
 import com.meechao.detailflow.utils.InputMethodUtils;
 import com.meechao.detailflow.utils.LogUtils;
+import com.meechao.detailflow.wedget.keyboard.listener.OnContentViewScrollListener;
 import java.util.Hashtable;
 import java.util.Map;
 
@@ -50,6 +52,7 @@ public class SmartKeyboardManager {
   private InputMethodManager mInputMethodManager;
 
   private OnContentViewScrollListener mOnContentViewScrollListener;
+  private KeyboardChangeListener mKeyboardChangeListener;
 
   // 键盘高度
   private int mKeyBoardHeight = 0;
@@ -61,6 +64,7 @@ public class SmartKeyboardManager {
     mEditText = builder.mNestedEditText;
     mInputMethodManager = builder.mNestedInputMethodManager;
     mOnContentViewScrollListener = builder.mOnNestedContentViewScrollListener;
+    mKeyboardChangeListener = builder.mKeyboardChangeListener;
     setUpCallbacks();
   }
 
@@ -70,7 +74,6 @@ public class SmartKeyboardManager {
     DisplayUtils.init(mActivity);
     // 默认键盘高度为267dp
     setKeyBoardHeight(DisplayUtils.dp2px(267));
-    //updateSoftInputMethod(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     detectKeyboard();// 监听View树变化，以便监听键盘是否弹出
     enableCloseKeyboardOnTouchOutside(mActivity);
 
@@ -183,10 +186,14 @@ public class SmartKeyboardManager {
         activityRootView.getWindowVisibleDisplayFrame(r);
         int heightDiff = DisplayUtils.getScreenHeight() - (r.bottom - r.top);
         boolean show = heightDiff >= mKeyBoardHeight / 3;
+        int keyboardHeight = 0;
         if (show) {
-          int keyboardHeight = heightDiff - DisplayUtils.getStatusBarHeight();
+          keyboardHeight = heightDiff - DisplayUtils.getStatusBarHeight();
           // 设置新的键盘高度
           setKeyBoardHeight(keyboardHeight);
+        }
+        if (null != mKeyboardChangeListener) {
+          mKeyboardChangeListener.onKeyboardChange(show, keyboardHeight);
         }
       });
     }
@@ -208,7 +215,7 @@ public class SmartKeyboardManager {
    */
   private void hideAllCustomKeyboard(boolean needSoftKeyboard) {
     for (Map.Entry<View, View> entry : keyboardTable.entrySet()) {
-      if (entry.getValue().isShown()) {
+      if (entry.getValue().getVisibility() == View.VISIBLE) {
         hideCustomKeyboard(entry.getValue(), needSoftKeyboard);
       }
     }
@@ -239,7 +246,7 @@ public class SmartKeyboardManager {
             showSelectCustomKeyboard(value);
           } else {
             // 没有自定义键盘显示
-            if (isSoftKeyboardShowing()) {
+            if (InputMethodUtils.isSoftKeyboardShown(mActivity)) {
               // 系统软键盘正在显示
               showSelectCustomKeyboard(value);
             } else {
@@ -248,6 +255,7 @@ public class SmartKeyboardManager {
             }
           }
         }
+        mEditText.requestFocus();
       }
     });
   }
@@ -376,16 +384,19 @@ public class SmartKeyboardManager {
           if (hasCustomKeyboardShown()) {
             hideAllCustomKeyboard(false);
           }
+          //return true;
         }
 
         LogUtils.i(TAG, "dispatchTouchEvent: " + (mActivity.getCurrentFocus() instanceof EditText));
         if (isTouchedFocusView(touchX, touchY)) {
           // 如果点击的是输入框，那么延时折叠表情面板
+          //InputMethodUtils.showInputMethod(mActivity.getCurrentFocus(), 0);
           postDelayed(new Runnable() {
             @Override public void run() {
               hideAllCustomKeyboard(true);
             }
           }, 500);
+          //return true;
         }
       }
       return super.onTouchEvent(event);
@@ -444,8 +455,16 @@ public class SmartKeyboardManager {
    * 显示软键盘
    */
   public void showSoftKeyboard() {
-    mEditText.requestFocus();
-    mInputMethodManager.showSoftInput(mEditText, 0);
+    if (null == mEditText) {
+      return;
+    }
+
+    if (!mEditText.hasFocus()) {
+      mEditText.requestFocus();
+    }
+    if (!isSoftKeyboardShowing()) {
+      mInputMethodManager.showSoftInput(mEditText, 0);
+    }
   }
 
   public void updateEditText(EditText editText) {
@@ -474,6 +493,7 @@ public class SmartKeyboardManager {
     private InputMethodManager mNestedInputMethodManager;
 
     private OnContentViewScrollListener mOnNestedContentViewScrollListener;
+    private KeyboardChangeListener mKeyboardChangeListener;
 
     public Builder(Activity activity) {
       this.mNestedActivity = activity;
@@ -507,6 +527,11 @@ public class SmartKeyboardManager {
       return this;
     }
 
+    public SmartKeyboardManager.Builder addKeyboardChangeListener(KeyboardChangeListener keyboardChangeListener) {
+      this.mKeyboardChangeListener = keyboardChangeListener;
+      return this;
+    }
+
     public SmartKeyboardManager create() {
       initFieldsWithDefaultValue();
       return new SmartKeyboardManager(this);
@@ -519,5 +544,15 @@ public class SmartKeyboardManager {
           .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
               | WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     }
+  }
+
+  public interface KeyboardChangeListener {
+    /**
+     * call back
+     *
+     * @param isShow true is show else hidden
+     * @param keyboardHeight keyboard height
+     */
+    void onKeyboardChange(boolean isShow, int keyboardHeight);
   }
 }

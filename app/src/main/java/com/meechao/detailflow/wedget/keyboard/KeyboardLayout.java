@@ -5,18 +5,23 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.meechao.detailflow.R;
 import com.meechao.detailflow.adapter.CollectionClassKeyboardAdapter;
 import com.meechao.detailflow.adapter.EmojiKeyboardAdapter;
@@ -26,12 +31,11 @@ import com.meechao.detailflow.entity.TopicBean;
 import com.meechao.detailflow.richText.TEditText;
 import com.meechao.detailflow.utils.AssetUtils;
 import com.meechao.detailflow.utils.InputMethodUtils;
-import com.meechao.detailflow.utils.KeyboardChangeListener;
 import com.meechao.detailflow.utils.RcvInitUtils;
 import com.meechao.detailflow.wedget.flowView.PageFlowView;
-import com.meechao.detailflow.wedget.flowView.PageScrollView;
-import com.meechao.detailflow.wedget.keyboard.smartKeyboard.OnContentViewScrollListener;
-import com.meechao.detailflow.wedget.keyboard.smartKeyboard.SmartKeyboardManager;
+import com.meechao.detailflow.wedget.keyboard.keyboardManager.SmartKeyboardManager;
+import com.meechao.detailflow.wedget.keyboard.listener.OnContentViewScrollListener;
+import com.meechao.detailflow.wedget.keyboard.listener.OnKeyboardChildClickListener;
 import com.meechao.detailflow.wedget.viewPager.AutoCenterViewPager;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +47,7 @@ import java.util.List;
  * Date：2018-01-15 17:01
  * Mail：jihaifeng@meechao.com
  */
-public class KeyboardLayout extends LinearLayout {
+public class KeyboardLayout extends FrameLayout {
 
   /*****************************键盘头部*******************************/
   // 键盘切换按钮的跟布局
@@ -101,12 +105,16 @@ public class KeyboardLayout extends LinearLayout {
 
   private SmartKeyboardManager mSmartKeyboardManager;
 
-  private KeyBoardChildClickListener onChildClickListener;
+  private OnKeyboardChildClickListener onChildClickListener;
 
   private Activity mActivity;
   private TEditText et;
 
-  private boolean isNeedInput = true, isNeedEmoji = true, isNeedLiving = false, isNeedTopic = true, isNeedSend = true;
+  // 限制最大的话题数量, ，-1 不限制个数
+  private int maxTopicNum = -1;
+
+  private boolean isNeedInput = true, isNeedEmoji = true, isNeedLiving = false, isNeedTopic = true, isNeedSend = true,
+      isNeedTextLength = false;
 
   private int[] topicBg = new int[] { R.drawable.keyboard_topic_normal, R.drawable.keyboard_normal };
   private int[] emojiBg = new int[] { R.drawable.keyboard_expression_normal, R.drawable.keyboard_normal };
@@ -172,20 +180,17 @@ public class KeyboardLayout extends LinearLayout {
       RecyclerView recyclerView = view.findViewById(R.id.rcv_keyboard);
       EmojiKeyboardAdapter emojiKeyboardAdapter = new EmojiKeyboardAdapter(emojiData, i, rows * columns);
       RcvInitUtils.initGridRcv(getContext(), recyclerView, columns, emojiKeyboardAdapter);
-      emojiKeyboardAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-        @Override public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-          if (null != onChildClickListener) {
-            onChildClickListener.onEmojiItemClick((String) adapter.getItem(position));
-          }
-          et.getEditableText().insert(et.getSelectionStart(), (CharSequence) adapter.getItem(position));
+      emojiKeyboardAdapter.setOnItemClickListener((adapter, view1, position) -> {
+        if (null != onChildClickListener) {
+          onChildClickListener.onEmojiItemClick((String) adapter.getItem(position));
         }
+        et.getEditableText().insert(et.getSelectionStart(), (CharSequence) adapter.getItem(position));
       });
       viewPagerList.add(view);
     }
     emojiViewpager.setAdapter(new keyBoardVpAdapter(viewPagerList));
     setOvalLayout(llEmojiDot);
   }
-
 
   /**
    * 设置圆点
@@ -201,7 +206,7 @@ public class KeyboardLayout extends LinearLayout {
       llDot.addView(LayoutInflater.from(getContext()).inflate(R.layout.keyboard_dot, null));
     }
     // 默认显示第一页
-    llDot.getChildAt(0).findViewById(R.id.v_dot).setBackgroundResource(R.drawable.shape_circle_indicator_orange);
+    llDot.getChildAt(0).findViewById(R.id.v_dot).setBackgroundResource(R.drawable.shape_keyboard_indicator_select);
     emojiViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
       @Override public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
@@ -211,11 +216,11 @@ public class KeyboardLayout extends LinearLayout {
         // 取消圆点选中
         llDot.getChildAt(curIndex)
             .findViewById(R.id.v_dot)
-            .setBackgroundResource(R.drawable.shape_circle_indicator_gray);
+            .setBackgroundResource(R.drawable.shape_keyboard_indicator_normal);
         // 圆点选中
         llDot.getChildAt(position)
             .findViewById(R.id.v_dot)
-            .setBackgroundResource(R.drawable.shape_circle_indicator_orange);
+            .setBackgroundResource(R.drawable.shape_keyboard_indicator_select);
         curIndex = position;
       }
 
@@ -231,13 +236,11 @@ public class KeyboardLayout extends LinearLayout {
   private void initCollectionKeyboard() {
     collectionClassKeyboardAdapter = new CollectionClassKeyboardAdapter(collectionTopics);
     RcvInitUtils.initHorizontalRcv(getContext(), rcvTopicClass, collectionClassKeyboardAdapter);
-    collectionClassKeyboardAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-      @Override public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-        collectionClassKeyboardAdapter.setItemSelect(position);
-        CollectionTopic collectionTopic = (CollectionTopic) adapter.getItem(position);
-        if (null != collectionTopic && null != collectionTopic.details) {
-          updateTopicKeyboard(collectionTopic.details);
-        }
+    collectionClassKeyboardAdapter.setOnItemClickListener((adapter, view, position) -> {
+      collectionClassKeyboardAdapter.setItemSelect(position);
+      CollectionTopic collectionTopic = (CollectionTopic) adapter.getItem(position);
+      if (null != collectionTopic && null != collectionTopic.details) {
+        updateTopicKeyboard(collectionTopic.details);
       }
     });
     if (collectionClassKeyboardAdapter.getData().size() > 0) {
@@ -256,16 +259,20 @@ public class KeyboardLayout extends LinearLayout {
     }
     List<String> topicList = new ArrayList<>();
     for (TopicBean t : details) {
-      topicList.add(t.labelTopicValue);
+      if (null != t && !TextUtils.isEmpty(t.labelTopicValue)) {
+        topicList.add(t.labelTopicValue);
+      }
     }
     pfvTopic.setData(topicList);
-    pfvTopic.setOnTagClickListener(new PageScrollView.OnTagClickListener() {
-      @Override public void onClick(View view, String obj) {
-        if (null != onChildClickListener) {
-          onChildClickListener.onTopicItemClick(obj);
-        }
-        et.insertTopic(obj);
+    pfvTopic.setOnTagClickListener((view, obj) -> {
+      if (null != onChildClickListener) {
+        onChildClickListener.onTopicItemClick(obj);
       }
+      if (maxTopicNum >= 0 && et.getTopicList().size() >= maxTopicNum) {
+        Toast.makeText(mActivity, "最多选择" + maxTopicNum + "个标签", Toast.LENGTH_SHORT).show();
+        return;
+      }
+      et.insertTopic(obj);
     });
   }
 
@@ -365,6 +372,7 @@ public class KeyboardLayout extends LinearLayout {
         rbKeybordTopicTag.setVisibility(isNeedTopic ? VISIBLE : GONE);
         rbSend.setVisibility(isNeedSend ? VISIBLE : GONE);
         keyboardRichInput.setVisibility(isNeedInput ? VISIBLE : GONE);
+        textLength.setVisibility(isNeedTextLength ? VISIBLE : GONE);
 
         break;
     }
@@ -409,9 +417,18 @@ public class KeyboardLayout extends LinearLayout {
   public void hideAll() {
     InputMethodUtils.hideKeyboard(null != mActivity ? mActivity.getCurrentFocus() : llKeyboardViewTitle);
     resetRb();
-    if (null != onChildClickListener){
+    if (null != onChildClickListener) {
       onChildClickListener.hideAllKeyboard();
     }
+  }
+
+  /**
+   * 设置键盘智能切换
+   *
+   * @param activity 当前Activity
+   */
+  public KeyboardLayout setKeyBoardManager(Activity activity) {
+    return this.setKeyBoardManager(activity, null);
   }
 
   /**
@@ -421,7 +438,7 @@ public class KeyboardLayout extends LinearLayout {
    * @param contentView 可滑动的内容布局，一般在输入框上方
    */
   public KeyboardLayout setKeyBoardManager(Activity activity, View contentView) {
-    return this.setKeyBoardManager(activity, contentView, null);
+    return this.setKeyBoardManager(activity, contentView, null, true);
   }
 
   /**
@@ -431,7 +448,8 @@ public class KeyboardLayout extends LinearLayout {
    * @param contentView 可滑动的内容布局，一般在输入框上方
    * @param editText 输入框，如果null 则使用 默认的
    */
-  public KeyboardLayout setKeyBoardManager(Activity activity, View contentView, TEditText editText) {
+  public KeyboardLayout setKeyBoardManager(Activity activity, View contentView, TEditText editText,
+      boolean needScroll) {
     mActivity = activity;
     et = null == editText ? keyboardRichInput : editText;
     mSmartKeyboardManager = new SmartKeyboardManager.Builder(activity).setContentView(contentView)
@@ -441,34 +459,42 @@ public class KeyboardLayout extends LinearLayout {
         .setEditText(et)
         .addOnContentViewScrollListener(new OnContentViewScrollListener() {
           @Override public void needScroll(int distance) {
-            contentView.scrollBy(0, distance);
+            if (null != contentView && needScroll) {
+              contentView.scrollBy(0, distance);
+            }
+          }
+        })
+        .addKeyboardChangeListener(new SmartKeyboardManager.KeyboardChangeListener() {
+          @Override public void onKeyboardChange(boolean isShow, int keyboardHeight) {
+            if (isShow) {
+              resetRb();
+              if (null != onChildClickListener) {
+                onChildClickListener.showKeyboard();
+              }
+              ViewGroup.LayoutParams params1 = llKeyboardEmoji.getLayoutParams();
+              if (params1 != null && params1.height != keyboardHeight) {
+                params1.height = keyboardHeight;
+                llKeyboardEmoji.setLayoutParams(params1);
+              }
+            } else {
+              if (!isEmojiShowing() && !isTopicShowing()) {
+                hideAll();
+              }
+            }
           }
         })
         .create();
-
-     /*键盘监听*/
-    new KeyboardChangeListener(activity).setKeyBoardListener((isShow, keyboardHeight) -> {
-      if (isShow) {
-        resetRb();
-        if (null != onChildClickListener){
-          onChildClickListener.showKeyboard();
-        }
-      } else {
-        if (!isEmojiShowing() && !isTopicShowing()) {
-        hideAll();
-        }
-      }
-    });
     return this;
   }
 
   /**
    * 键盘点击事件
    *
-   * @param childClickListener
+   * @param childClickListener 点击事件监听器
    */
-  public void setOnChildClick(KeyBoardChildClickListener childClickListener) {
+  public KeyboardLayout setOnChildClick(OnKeyboardChildClickListener childClickListener) {
     this.onChildClickListener = childClickListener;
+    return this;
   }
 
   /**
@@ -531,39 +557,80 @@ public class KeyboardLayout extends LinearLayout {
     return this;
   }
 
+  public KeyboardLayout setMaxTopicNum(int maxTopicNum) {
+    this.maxTopicNum = maxTopicNum;
+    return this;
+  }
+
   /**
    * 设置输入字符提示文字
    *
    * @param len 提示文字
    */
   public KeyboardLayout updateTextLength(String len) {
+    isNeedTextLength = !TextUtils.isEmpty(len);
     textLength.setVisibility(TextUtils.isEmpty(len) ? GONE : VISIBLE);
     textLength.setText(len);
     return this;
   }
 
-  public KeyboardLayout hideInput() {
-    isNeedInput = false;
+  public KeyboardLayout showInput(boolean isShow) {
+    isNeedInput = isShow;
     return this;
   }
 
-  public KeyboardLayout hideEmoji() {
-    isNeedEmoji = false;
+  public KeyboardLayout showEmoji(boolean isShow) {
+    isNeedEmoji = isShow;
     return this;
   }
 
-  public KeyboardLayout hideLiving() {
-    isNeedLiving = false;
+  public KeyboardLayout showLiving(boolean isShow) {
+    isNeedLiving = isShow;
     return this;
   }
 
-  public KeyboardLayout hideTopic() {
-    isNeedTopic = false;
+  public KeyboardLayout showTopic(boolean isShow) {
+    isNeedTopic = isShow;
     return this;
   }
 
-  public KeyboardLayout hideSend() {
-    isNeedSend = false;
+  public KeyboardLayout showSend(boolean isShow) {
+    isNeedSend = isShow;
+    return this;
+  }
+
+  public KeyboardLayout showTextLength(boolean isShow) {
+    isNeedTextLength = isShow;
+    return this;
+  }
+
+  public KeyboardLayout setEditText(TEditText et) {
+    this.et = et;
+    mSmartKeyboardManager.updateEditText(et);
+    return this;
+  }
+
+  /**
+   * 如果自定义键盘还在显示，中断"back"操作
+   */
+  public boolean interceptBackPressed() {
+    if (null == mSmartKeyboardManager) {
+      return true;
+    }
+    return mSmartKeyboardManager.interceptBackPressed();
+  }
+
+  /**
+   * 设置输入框的hint提示语
+   *
+   * @param s 提示语
+   */
+  public KeyboardLayout setInputHint(String s) {
+    SpannableString spannableString = new SpannableString(s);
+    spannableString.setSpan(new AbsoluteSizeSpan(12, true), 0, s.length(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+    if (null != et) {
+      et.setHint(spannableString);
+    }
     return this;
   }
 
@@ -572,5 +639,22 @@ public class KeyboardLayout extends LinearLayout {
    */
   public void resetRb() {
     changeSelect(KeyboardSelectTyper.def);
+  }
+
+  public void showSoftKeyboard() {
+    mSmartKeyboardManager.showSoftKeyboard();
+  }
+
+  public TEditText getInputEdit() {
+    return et;
+  }
+
+  /**
+   * 清空输入框的内容
+   */
+  public void clearInputContent() {
+    if (null != et) {
+      et.setText("");
+    }
   }
 }

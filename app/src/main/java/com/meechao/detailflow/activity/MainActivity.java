@@ -3,18 +3,16 @@ package com.meechao.detailflow.activity;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RadioButton;
 import android.widget.ScrollView;
 import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.OnClick;
 import com.meechao.detailflow.R;
-import com.meechao.detailflow.entity.LivingLabelBean;
 import com.meechao.detailflow.richText.TEditText;
 import com.meechao.detailflow.utils.AssetUtils;
 import com.meechao.detailflow.wedget.WheelSelectDialog;
-import com.meechao.detailflow.wedget.keyboard.KeyBoardChildClickListener;
 import com.meechao.detailflow.wedget.keyboard.KeyboardLayout;
+import com.meechao.detailflow.wedget.keyboard.listener.OnKeyboardChildClickListener;
 import java.util.Arrays;
 
 /**
@@ -40,7 +38,8 @@ public class MainActivity extends BaseActivity {
   //
   //}
   String[] PLANETS = new String[] {
-      "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Uranus", "Neptune", "Pluto", "Venus", "Earth", "Mars", "Jupiter",
+      "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Uranus" , "Neptune", "Pluto", "Venus", "Earth", "Mars",
+      "Jupiter",
       "Uranus", "Neptune", "Pluto", "Venus", "Earth", "Mars", "Jupiter", "Uranus", "Neptune", "Pluto", "Venus", "Earth",
       "Mars", "Jupiter", "Uranus", "Neptune", "Pluto", "Venus", "Earth", "Mars", "Jupiter", "Uranus", "Neptune", "Pluto"
   };
@@ -51,38 +50,18 @@ public class MainActivity extends BaseActivity {
   }
 
   @Override protected void initViewAndEvent() {
-    richKeyboard.setKeyBoardManager(this, rcvList, editInput).setTopicBg(new int[] {
+    richKeyboard.setKeyBoardManager(this, rcvList).setTopicBg(new int[] {
         R.drawable.keyboard_question_normal, R.drawable.keyboard_normal
-    }).hideInput().hideSend().resetRb();
+    }).resetRb();
     //richKeyboard.setCollectionTopics(AssetUtils.getCollectionTopic());
     richKeyboard.setTopics(AssetUtils.getArticleTopic());
-    richKeyboard.setOnChildClick(new KeyBoardChildClickListener() {
-      @Override public void onTopicItemClick(String topicStr) {
-        Toast.makeText(MainActivity.this, topicStr, Toast.LENGTH_SHORT).show();
-      }
-
-      @Override public void onEmojiItemClick(String emojiStr) {
-        Toast.makeText(MainActivity.this, emojiStr, Toast.LENGTH_SHORT).show();
-      }
-
-      @Override public void onLivingItemClick(LivingLabelBean livingLabelBean) {
-        Toast.makeText(MainActivity.this, livingLabelBean.labelValue, Toast.LENGTH_SHORT).show();
-      }
-
-      @Override public void onSend(String content) {
-        Toast.makeText(MainActivity.this, content, Toast.LENGTH_SHORT).show();
-      }
-
-      @Override public void onBtnStateChanged(RadioButton rbEmojiBtn, RadioButton rbTopicBtn, RadioButton rbLivingBtn) {
-        Toast.makeText(MainActivity.this, "aa", Toast.LENGTH_SHORT).show();
-      }
-
+    richKeyboard.setOnChildClick(new OnKeyboardChildClickListener() {
       @Override public void hideAllKeyboard() {
-        richKeyboard.setVisibility(View.GONE);
+        super.hideAllKeyboard();
       }
 
       @Override public void showKeyboard() {
-        richKeyboard.setVisibility(View.VISIBLE);
+        super.showKeyboard();
       }
     });
 

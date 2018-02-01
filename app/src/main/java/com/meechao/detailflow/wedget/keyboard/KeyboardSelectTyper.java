@@ -18,7 +18,7 @@ import static com.meechao.detailflow.wedget.keyboard.KeyboardSelectTyper.topic;
  * Date：2018-01-16 09:51
  * Mail：jihaifeng@meechao.com
  */
-@IntDef({emoji,topic,living,send,input,def})
+@IntDef ({emoji,topic,living,send,input,def})
 @Retention(RetentionPolicy.SOURCE)
 public @interface KeyboardSelectTyper {
   int emoji = 0xf0f0;

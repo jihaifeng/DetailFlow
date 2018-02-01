@@ -1,4 +1,4 @@
-package com.meechao.detailflow.wedget.keyboard;
+package com.meechao.detailflow.wedget.keyboard.listener;
 
 import android.widget.RadioButton;
 import com.meechao.detailflow.entity.LivingLabelBean;
@@ -10,7 +10,7 @@ import com.meechao.detailflow.entity.LivingLabelBean;
  * Date：2018-01-17 09:13
  * Mail：jihaifeng@meechao.com
  */
-public abstract   class onKeyboardClickListener implements KeyBoardChildClickListener{
+public abstract class OnKeyboardChildClickListener implements KeyboardListener {
 
   @Override public void onTopicItemClick(String topicStr) {
 

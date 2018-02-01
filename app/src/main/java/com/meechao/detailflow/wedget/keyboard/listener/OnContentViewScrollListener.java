@@ -1,4 +1,4 @@
-package com.meechao.detailflow.wedget.keyboard.smartKeyboard;
+package com.meechao.detailflow.wedget.keyboard.listener;
 
 /**
  * Func：
